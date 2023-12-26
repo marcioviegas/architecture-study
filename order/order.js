@@ -1,40 +1,24 @@
 const express = require('express');
-const prometheus = require('prom-client');
+const promMid = require('express-prometheus-middleware');
 
 // Create an Express application
 const app = express();
 const port = 8080;
 
-// Enable collection of default metrics
-prometheus.collectDefaultMetrics();
+app.use(promMid({
+    metricsPath: '/metrics',
+    collectDefaultMetrics: true,
+    requestDurationBuckets: [0.1, 0.5, 1, 1.5],
+    requestLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
+    responseLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400]
+}));
 
-// Define a custom metric
-const customMetric = new prometheus.Gauge({
-    name: 'custom_metric',
-    help: 'A custom metric example',
-    labelNames: ['label'],
-});
-
-// Define a route that increments the custom metric
 app.get('/', (req, res) => {
-    const labelValue = req.query.label || 'label';
-    customMetric.labels(labelValue).inc();
-    res.send('Metric incremented!');
+    console.log('GET /hello');
+    const { name = 'Anon' } = req.query;
+    res.json({ message: `Hello, ${name}!` });
 });
 
-// Define a route that exposes the Prometheus metrics
-app.get('/metrics', async (req, res) => {
-    try {
-        const metrics = await prometheus.register.metrics();
-        res.set('Content-Type', prometheus.register.contentType);
-        res.send(metrics);
-    } catch (error) {
-        console.error('Error in /metrics route:', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// Start the server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Example api is listening on http://localhost:${port}`);
 });

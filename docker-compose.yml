@@ -18,7 +18,7 @@ services:
       - '3000:3000'
     volumes:
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
-      - ./grafana/dashboard.json:/var/lib/grafana/dashboards/dashboard.json
+      - ./grafana/main.json:/var/lib/grafana/dashboards/main.json
     networks:
       - monitoring
     depends_on:

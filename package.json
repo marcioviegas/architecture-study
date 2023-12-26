@@ -1,0 +1,14 @@
+{
+  "name": "architecture-study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "artillery run load-test.yml"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "artillery": "^2.0.3"
+  }
+}

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "prom-client": "^14.0.0"
+    "express-prometheus-middleware": "^1.2.0"
   },
   "author": "",
   "license": "ISC"
