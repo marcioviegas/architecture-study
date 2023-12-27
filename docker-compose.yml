@@ -24,5 +24,21 @@ services:
     depends_on:
       - prometheus
 
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: order
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    networks:
+      - monitoring
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+
+
 networks:
   monitoring:

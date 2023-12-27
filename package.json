@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "artillery run load-test.yml"
+    "test": "docker run --rm -i grafana/k6 run - <./test/order-creation-load-test.js"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "artillery": "^2.0.3"
+  "devDependencies": {
+    "k6": "^0.0.0"
   }
 }
