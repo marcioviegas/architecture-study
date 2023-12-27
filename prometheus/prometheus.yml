@@ -1,6 +1,12 @@
 global:
   scrape_interval: 5s
 
+scrape_config_files:
+remote_write:
+storage:
+remote_read:
+rule_files:
+alerting:
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
@@ -9,3 +15,7 @@ scrape_configs:
   - job_name: 'order'
     static_configs:
       - targets: ['host.docker.internal:8080']
+
+  - job_name: 'mysql'
+    static_configs:
+      - targets: ['mysql-exporter:9104']
