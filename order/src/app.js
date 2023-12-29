@@ -1,5 +1,5 @@
 const express = require('express');
-const promMid = require('express-prometheus-middleware');
+const monitoring = require("./monitoring");
 const bodyParser = require('body-parser');
 
 
@@ -12,13 +12,7 @@ const port = 8080;
 
 app.use(bodyParser.json());
 
-app.use(promMid({
-    metricsPath: '/metrics',
-    collectDefaultMetrics: true,
-    requestDurationBuckets: [0.1, 0.5, 1, 1.5],
-    requestLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
-    responseLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400]
-}));
+app.use(monitoring);
 
 Order.hasOne(Payment);
 Payment.belongsTo(Order);
