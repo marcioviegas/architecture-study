@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "docker run --rm -i grafana/k6 run - <./test/order-creation-load-test.js"
+    "test": "docker run --rm -i grafana/k6 run - <./test/order-creation-load-test.js",
+    "start": "node order/src/app.js",
+    "up": "docker compose up . --build"
   },
   "author": "",
   "license": "ISC",
