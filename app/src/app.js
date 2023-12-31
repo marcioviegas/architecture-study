@@ -22,8 +22,9 @@ app.get('/', async (req, res) => {
     const newPayment =  pay(newOrder.id);
 
     newPayment.then((newPayment) => {
-        res.status(201).json(newPayment.toJSON());
+        res.status(201).json(newPayment.data);
     }).catch((err) => {
+        console.log(err);
         res.status(400).json({error: "Error in payment"})
 
     });
