@@ -3,29 +3,40 @@ const nock = require('nock');
 const URL = "http://www.payment.com";
 const PATH = "/pay"
 
+const getRandomResponseTime = () => {
+    const baseResponseTime = Math.random() * 200;
+    const isDelayedResponse = Math.random() < 0.1;
+
+    if (isDelayedResponse) {
+        return baseResponseTime + 1000; // Add extra 2000 milliseconds for delayed response
+    }
+
+    return baseResponseTime;
+};
+
 const scope = nock(URL)
-    .get(PATH)
-    .reply(201, 'paid')
+    .post(PATH)
+    .reply(function (uri, requestBody) {
+
+        const { orderId } = requestBody;
+
+        // Validate orderId
+        if (!orderId) {
+            return [400, { error: 'orderId is required' }];
+        }
+
+        // Simulate occasional server error
+        if (Math.random() < 0.1) {
+            return [500, { error: 'Internal Server Error' }];
+        }
+
+        // Simulate random response time
+        const responseTime = getRandomResponseTime();
+
+        // Return a unique payment id
+        return [200, { paymentId: `payment_id_${orderId}` }, { 'x-response-time': responseTime }];
+    })
     .persist();
-
-const pay = (newOrderId) => {
-    // Randomly decide whether the Promise should resolve or reject
-    const shouldSucceed = Math.random() < 0.9;
-
-    // Generate a random delay between 0 and 300 milliseconds
-    const randomDelay = Math.floor(Math.random() * 301); // 0 to 300 milliseconds
-
-    return new Promise((resolve, reject) => {
-        // Use setTimeout to simulate an asynchronous operation with a random delay
-        setTimeout(() => {
-            if (shouldSucceed) {
-                resolve(Payment.create({OrderId: newOrderId}));
-            } else {
-                reject(new Error('Promise failed after 3 seconds'))
-            }
-        }, shouldSucceed ? randomDelay : randomDelay * 1.3);
-    });
-}
 
 
 module.exports = URL + PATH;
