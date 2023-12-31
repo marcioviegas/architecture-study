@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 const sequelize = require("./sequelize");
 const {Payment, pay} = require("./payment");
-const Order = require("./order");
+const Order = require("./.");
 
 const app = express();
 const port = 8080;

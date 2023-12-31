@@ -1,6 +1,6 @@
 const promClient = require('prom-client');
 
-const Order = require("./order")
+const Order = require("./.")
 const {Payment} = require("./payment")
 const prometheus_middleware = require("express-prometheus-middleware");
 
