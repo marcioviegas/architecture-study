@@ -96,25 +96,12 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "http_requests_total",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "HTTP Requests",
-          "range": true,
-          "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
           "expr": "total_number_of_payments",
           "hide": false,
           "instant": false,
           "legendFormat": "Payments Done",
           "range": true,
-          "refId": "B"
+          "refId": "AA"
         },
         {
           "datasource": {
@@ -128,7 +115,7 @@
           "instant": false,
           "legendFormat": "Orders Created",
           "range": true,
-          "refId": "A"
+          "refId": "B"
         }
       ],
       "title": "Panel Title",
@@ -142,19 +129,16 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "red",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -209,16 +193,20 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
           },
-          "mappings": []
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -228,14 +216,12 @@
         "x": 12,
         "y": 9
       },
-      "id": 86,
+      "id": 87,
       "options": {
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "pieType": "pie",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -243,11 +229,10 @@
           "fields": "",
           "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "textMode": "auto",
+        "wideLayout": true
       },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -255,28 +240,15 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "total_number_of_orders - (total_number_of_orders - total_number_of_payments)",
+          "expr": "(total_number_of_orders - total_number_of_payments) / total_number_of_orders * 100",
           "instant": false,
-          "legendFormat": "Orders Completed",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "total_number_of_orders - total_number_of_payments",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Orders Failed",
-          "range": true,
-          "refId": "B"
         }
       ],
-      "title": "Order Status",
-      "type": "piechart"
+      "title": "% orders lost",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -339,7 +311,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 12,
         "x": 0,
         "y": 17
       },
@@ -385,6 +357,83 @@
       ],
       "title": "Order X Payments",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 86,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "total_number_of_orders - (total_number_of_orders - total_number_of_payments)",
+          "instant": false,
+          "legendFormat": "Orders Completed",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "total_number_of_orders - total_number_of_payments",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Orders Failed",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Order Status",
+      "type": "piechart"
     },
     {
       "collapsed": false,
@@ -890,6 +939,6 @@
   "timezone": "browser",
   "title": "Order Service",
   "uid": "zJfYJhynk",
-  "version": 17,
+  "version": 24,
   "weekStart": ""
 }
