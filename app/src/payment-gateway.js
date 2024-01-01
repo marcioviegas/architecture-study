@@ -4,7 +4,7 @@ const URL = "http://www.payment.com";
 const PATH = "/pay"
 
 const getRandomResponseTime = () => {
-    const baseResponseTime = Math.random() * 200;
+    const baseResponseTime = (Math.random() * 200) + 100;
     const isDelayedResponse = Math.random() < 0.1;
 
     if (isDelayedResponse) {
