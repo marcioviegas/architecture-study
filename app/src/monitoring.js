@@ -24,9 +24,13 @@ const number_of_payments = new promClient.Gauge({
 
 
 const updateMetrics = async () => {
-    number_of_orders.set(await Order.count());
-    number_of_payments.set(await Payment.count());
-    console.log("Metricas atualizadas");
+    let orders = await Order.count();
+    let payments = await Payment.count();
+
+    number_of_orders.set(orders);
+    number_of_payments.set(payments);
+
+    console.log(`Metricas atualizadas com sucesso:\nOrders in database: ${orders} \nPayments in database: ${payments}`);
 }
 
 const interval = setInterval(updateMetrics, 5000);

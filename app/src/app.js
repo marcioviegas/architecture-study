@@ -24,7 +24,7 @@ app.get('/', async (req, res) => {
     newPayment.then((newPayment) => {
         res.status(201).json(newPayment.data);
     }).catch((err) => {
-        res.status(400).json({error: "Error in payment"})
+        res.status(err.response?.status ? err.response.status : 500).json({error: "Error in payment"})
     });
 
 });

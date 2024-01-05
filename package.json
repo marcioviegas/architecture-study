@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "docker run --rm -i grafana/k6 run - <./test/order-creation-load-test.js",
-    "start": "node app/src/app.js",
-    "up": "docker compose up --build"
+    "start": "nodemon app/src/app.js",
+    "up": "docker-compose up --build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "k6": "^0.0.0"
+    "k6": "^0.0.0",
+    "nodemon": "^3.0.2"
   }
 }

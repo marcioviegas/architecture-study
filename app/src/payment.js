@@ -22,15 +22,13 @@ const pay = (orderId) => {
         orderId: orderId
     };
 
-
     return axios.post(paymentURL, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json'
         }
     }).then(() => {
-        Payment.create({OrderId: orderId})
+        return Payment.create({OrderId: orderId})
     }).catch((err) => {
-        console.error("PAYMENT GATEWAY FAILED: ${err.data}");
         throw err;
     });
 }

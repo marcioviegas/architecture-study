@@ -4,11 +4,11 @@ const URL = "http://www.payment.com";
 const PATH = "/pay"
 
 const getRandomResponseTime = () => {
-    const baseResponseTime = (Math.random() * 200) + 100;
+    const baseResponseTime = (Math.random() * 200);
     const isDelayedResponse = Math.random() < 0.1;
 
     if (isDelayedResponse) {
-        return baseResponseTime + 1000; // Add extra 2000 milliseconds for delayed response
+        return baseResponseTime + 2000; // Add extra 2000 milliseconds for delayed response
     }
 
     return baseResponseTime;
@@ -16,25 +16,24 @@ const getRandomResponseTime = () => {
 
 const scope = nock(URL)
     .post(PATH)
+    .delay(getRandomResponseTime())
     .reply(function (uri, requestBody) {
 
         const { orderId } = requestBody;
 
         // Validate orderId
-        if (!orderId) {
-            return [400, { error: 'orderId is required' }];
+        if (!orderId || Math.random() < 0.1) {
+            return [400, { error: 'Bad Request' }];
         }
 
         // Simulate occasional server error
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.05) {
             return [500, { error: 'Internal Server Error' }];
         }
 
-        // Simulate random response time
-        const responseTime = getRandomResponseTime();
 
         // Return a unique payment id
-        return [200, { paymentId: `payment_id_${orderId}` }, { 'x-response-time': responseTime }];
+        return [200, { paymentId: `payment_id_${orderId}` }];
     })
     .persist();
 
